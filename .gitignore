@@ -3,3 +3,5 @@
 dataset/
 venv/
 checkpoints/
+InferSent/
+results.yml
