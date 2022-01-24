@@ -3,5 +3,8 @@
 dataset/
 venv/
 checkpoints/
-InferSent/
+img_cap/
 results.yml
+my-model/
+*pyc
+deprecated/
