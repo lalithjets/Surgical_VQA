@@ -82,7 +82,7 @@ In this project, we implement our method using the Pytorch and DGL library, the 
     - Images
     - Question and answer pairs : Download **[[`annotations`]()]**
 2. EndoVis-18-VQA (C)
-    - Images
+    - Images : Download **[[`Challenge Portal`](https://endovissub2018-roboticscenesegmentation.grand-challenge.org/home/)]** 
     - Question and answer pairs : Download **[[`annotations`]()]**
 3. Cholec80-VQA (C)
     - Images
@@ -90,7 +90,7 @@ In this project, we implement our method using the Pytorch and DGL library, the 
 
 ### Sentence
 1. EndoVis-18-VQA (S)
-    - Images
+    - Images : Download **[[`Challenge Portal`](https://endovissub2018-roboticscenesegmentation.grand-challenge.org/home/)]** 
     - Question and answer pairs : Download **[[`annotations`]()]**
 2. Cholec80-VQA (S) 
     - Images
