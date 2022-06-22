@@ -1,3 +1,12 @@
+'''
+Description     : VisualBert + Transformer based sentence generation model.
+Paper           : Surgical-VQA: Visual Question Answering in Surgical Scenes Using Transformers
+Author          : Lalithkumar Seenivasan, Mobarakol Islam, Adithya Krishna, Hongliang Ren
+Lab             : MMLAB, National University of Singapore
+Acknowledgement : Code adopted from the official implementation of VisualBertModel from 
+                  huggingface/transformers (https://github.com/huggingface/transformers.git) and modified.
+'''
+
 import numpy as np
 
 import torch
@@ -10,23 +19,24 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 channel_number = 512
 
 
-class VisualTextEncoder(nn.Module):
-    def __init__(self, decoder_layers, n_heads):
-        super(VisualTextEncoder, self).__init__()
-        
-        # visual feature extraction
-        self.img_feature_extractor = models.resnet18(pretrained=True)
-        self.img_feature_extractor.fc = nn.Sequential(*list(self.img_feature_extractor.fc.children())[:-1])
-        
-        # visual + caption feature extractor
-        VBconfig = VisualBertConfig(vocab_size= 4000, visual_embedding_dim = 512, num_hidden_layers = decoder_layers, num_attention_heads = n_heads, hidden_size = 2048)
-        self.VisTexEncoder = VisualBertModel(VBconfig)
+'''
+Encoder transformer : visualBert Encoder
+'''
+class VisualBertEncoder(nn.Module):
+    def __init__(self, vocab_size, decoder_layers, n_heads):
+        '''
+        VisualBert encoder
+        vocab_size = tokenizer length
+        decoder_layers = 6
+        n_heads = 6
+        '''
+        super(VisualBertEncoder, self).__init__()
+        VBconfig = VisualBertConfig(vocab_size= vocab_size, visual_embedding_dim = 512, num_hidden_layers = decoder_layers, num_attention_heads = n_heads, hidden_size = 2048)
+        self.VisualBertEncoder = VisualBertModel(VBconfig)
 
-
-    def forward(self, inputs, img):
-        # prepare visual embedding
-        visual_embeds = torch.unsqueeze(self.img_feature_extractor(img), 1)
+    def forward(self, inputs, visual_embeds):
         # print(visual_embeds.shape)
+        # prepare visual embedding
         visual_token_type_ids = torch.ones(visual_embeds.shape[:-1], dtype=torch.long).to(device)
         visual_attention_mask = torch.ones(visual_embeds.shape[:-1], dtype=torch.float).to(device)
 
@@ -43,12 +53,15 @@ class VisualTextEncoder(nn.Module):
         inputs['attention_mask'] = inputs['attention_mask'].to(device)
         inputs['visual_token_type_ids'] = inputs['visual_token_type_ids'].to(device)
         inputs['visual_attention_mask'] = inputs['visual_attention_mask'].to(device)
-        
-        outputs = self.VisTexEncoder(**inputs)
+
+        outputs = self.VisualBertEncoder(**inputs)
 
         return outputs
 
 
+'''
+Decoder transformer
+'''
 class ScaledDotProductAttention(nn.Module):
     def __init__(self, QKVdim):
         super(ScaledDotProductAttention, self).__init__()
@@ -115,6 +128,12 @@ class Multi_Head_Attention(nn.Module):
 
 class PoswiseFeedForwardNet(nn.Module):
     def __init__(self, embed_dim, d_ff, dropout):
+        '''
+        PosewiseFeedForwardNet
+        embed_dim = 300
+        d_ff      = dim_size
+        dropout`  = 0.1
+        '''
         super(PoswiseFeedForwardNet, self).__init__()
         """
         Two fc layers can also be described by two cnn with kernel_size=1.
@@ -137,7 +156,13 @@ class PoswiseFeedForwardNet(nn.Module):
 
 
 class DecoderLayer(nn.Module):
-    def __init__(self, embed_dim, dropout, attention_method, n_heads):
+    def __init__(self, embed_dim, dropout, n_heads):
+        '''
+        Decoder layer
+        embed_dim   = 300
+        droput      = 0.1
+        n_heads     = 6
+        '''
         super(DecoderLayer, self).__init__()
         self.dec_self_attn = Multi_Head_Attention(Q_dim=embed_dim, K_dim=embed_dim, QKVdim=64, n_heads=n_heads, dropout=dropout)
         self.dec_enc_attn = Multi_Head_Attention(Q_dim=embed_dim, K_dim=2048, QKVdim=64, n_heads=n_heads, dropout=dropout)
@@ -159,15 +184,24 @@ class DecoderLayer(nn.Module):
 
 
 class Decoder(nn.Module):
-    def __init__(self, n_layers, vocab_size, embed_dim, dropout, attention_method, n_heads):
+    def __init__(self, n_layers, vocab_size, embed_dim, dropout, n_heads, answer_len):
+        '''
+        Transformer decoder
+        n_layers    = 6
+        vocab_size  = tokenizer length
+        embed_fim   = 300
+        dropout     = 0.1
+        n_heads     = 6
+        answer_len  = 20
+        '''
         super(Decoder, self).__init__()
         self.vocab_size = vocab_size
+        self.anwer_len = answer_len
         self.tgt_emb = nn.Embedding(vocab_size, embed_dim, padding_idx=0)
         self.pos_emb = nn.Embedding.from_pretrained(self.get_position_embedding_table(embed_dim), freeze=True)
         self.dropout = nn.Dropout(p=dropout)
-        self.layers = nn.ModuleList([DecoderLayer(embed_dim, dropout, attention_method, n_heads) for _ in range(n_layers)])
+        self.layers = nn.ModuleList([DecoderLayer(embed_dim, dropout, n_heads) for _ in range(n_layers)])
         self.projection = nn.Linear(embed_dim, vocab_size, bias=False)
-        self.attention_method = attention_method
 
     def get_position_embedding_table(self, embed_dim):
         def cal_angle(position, hid_idx):
@@ -175,7 +209,7 @@ class Decoder(nn.Module):
         def get_posi_angle_vec(position):
             return [cal_angle(position, hid_idx) for hid_idx in range(embed_dim)]
 
-        embedding_table = np.array([get_posi_angle_vec(pos_i) for pos_i in range(20)])
+        embedding_table = np.array([get_posi_angle_vec(pos_i) for pos_i in range(self.anwer_len)])
         embedding_table[:, 0::2] = np.sin(embedding_table[:, 0::2])  # dim 2i
         embedding_table[:, 1::2] = np.cos(embedding_table[:, 1::2])  # dim 2i+1
         return torch.FloatTensor(embedding_table).to(device)
@@ -201,6 +235,7 @@ class Decoder(nn.Module):
         :param caption_lengths: [batch_size, 1]
         """
         batch_size = encoder_out.size(0)
+        token_size = encoder_out.size(1)
         # Sort input data by decreasing lengths.
         caption_lengths, sort_ind = caption_lengths.squeeze(1).sort(dim=0, descending=True)
         encoder_out = encoder_out[sort_ind]
@@ -221,12 +256,12 @@ class Decoder(nn.Module):
         # 0 0 0 0 2 2
         # 0 0 0 0 1 2
         # 0 0 0 0 1 1'''
-        dec_outputs = self.tgt_emb(encoded_captions) + self.pos_emb(torch.LongTensor([list(range(20))]*batch_size).to(device))
+        dec_outputs = self.tgt_emb(encoded_captions) + self.pos_emb(torch.LongTensor([list(range(self.anwer_len))]*batch_size).to(device))
         dec_outputs = self.dropout(dec_outputs)
         dec_self_attn_pad_mask = self.get_attn_pad_mask(encoded_captions, encoded_captions)
         dec_self_attn_subsequent_mask = self.get_attn_subsequent_mask(encoded_captions)
         dec_self_attn_mask = torch.gt((dec_self_attn_pad_mask + dec_self_attn_subsequent_mask), 0)
-        dec_enc_attn_mask = (torch.tensor(np.zeros((batch_size, 20, 26))).to(device) == torch.tensor(np.ones((batch_size, 20, 26))).to(device))
+        dec_enc_attn_mask = (torch.tensor(np.zeros((batch_size, self.anwer_len, token_size))).to(device) == torch.tensor(np.ones((batch_size, self.anwer_len, token_size))).to(device))
 
         dec_self_attns, dec_enc_attns = [], []
         for layer in self.layers:
@@ -238,15 +273,26 @@ class Decoder(nn.Module):
         return predictions, encoded_captions, decode_lengths, sort_ind, dec_self_attns, dec_enc_attns
 
 
-class Transformer(nn.Module):
+'''
+VisualBert Encoder + Transformer decoder
+'''
+class VisualBertSentence(nn.Module):
 
-    def __init__(self, vocab_size, embed_dim, encoder_layers, decoder_layers, dropout=0.1, attention_method="ByPixel", n_heads=8):
-        super(Transformer, self).__init__()
-        
-        self.encoder = VisualTextEncoder(encoder_layers, n_heads)
-        self.decoder = Decoder(decoder_layers, vocab_size, embed_dim, dropout, attention_method, n_heads)
+    def __init__(self, vocab_size, embed_dim, encoder_layers, decoder_layers, dropout=0.1, n_heads=8, answer_len = 20):
+        '''
+        VisualBert Encoder + Transformer decoder
+        vocab_size     = tokenizer length
+        embed_dim      = 300
+        encoder_layers = 6
+        decoder_layers = 6
+        dropout        = 0.1
+        n_heads        = 6
+        answer_len     = 20
+        '''
+        super(VisualBertSentence, self).__init__()
+        self.encoder = VisualBertEncoder(vocab_size, encoder_layers, n_heads)
+        self.decoder = Decoder(decoder_layers, vocab_size, embed_dim, dropout, n_heads, answer_len)
         self.embedding = self.decoder.tgt_emb
-        self.attention_method = attention_method
 
     def load_pretrained_embeddings(self, embeddings):
         self.embedding.weight = nn.Parameter(embeddings)
@@ -255,9 +301,9 @@ class Transformer(nn.Module):
         for p in self.embedding.parameters():
             p.requires_grad = fine_tune
 
-    def forward(self, inputs, img, encoded_captions, caption_lengths):
+    def forward(self, inputs, visual_embeds, encoded_captions, caption_lengths):
         # Vision and text encoder output
-        encoder_outputs = self.encoder(inputs, img)
+        encoder_outputs = self.encoder(inputs, visual_embeds)
         
         # predict answer using decoder model
         predictions, encoded_captions, decode_lengths, sort_ind, dec_self_attns, dec_enc_attns = self.decoder(encoder_outputs['last_hidden_state'], encoded_captions, caption_lengths)

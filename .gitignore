@@ -8,3 +8,5 @@ results.yml
 my-model/
 *pyc
 deprecated/
+extended_work/
+experiment_results/
