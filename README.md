@@ -4,12 +4,12 @@
 
 <h2> Surgical-VQA: Visual Question Answering in Surgical Scenes using Transformer </h1>
 
-<h4> Lalithkumar Seenivasan*, Mobarakol Islam*, Adithya Krishna and Hongliang Ren </h3>
+<h4> Lalithkumar Seenivasan*, Mobarakol Islam*, Adithya K Krishna and Hongliang Ren </h3>
 
 </samp>   
 
 ---
-| **[ [```arXiv```](<>) ]** |**[ [```Paper```](<>) ]** |
+| **[ [```arXiv```](<https://arxiv.org/abs/2206.11053>) ]** |**[ [```Paper```](<>) ]** |
 |:-------------------:|:-------------------:|
     
 The International Conference on Medical Image Computing and Computer Assisted Intervention (MICCAI) 2022
@@ -65,16 +65,29 @@ conda env create --name svqa --file=env.yml
 In this project, we implement our method using the Pytorch and DGL library, the structure is as follows: 
 
 - `checkpoints/`: Contains trained weights.
-- `dataloaders/`: Contains dataloader for classification and sentence model.
+- `dataloaders/`: 
+    - dataloaderClassification.py : Dataloader for classification task.
+    - dataloaderSentence.py : Dataloader for sentence task.
 - `dataset/`
     - `bertvocab/`
         - v2 : bert tokernizer
-    - `cholec80/` :
-        - 
-    - `faimed3d/` : TBA
-    - `instrument18/` : TBA
-    - `VQA-Med/` : TBA
-- `models/`: Contains network models.
+    - `cholec80/` : TBA
+    - `instrument18/` : seq_{1-7,9-12,14-16}. Each sequence folder follows the following seq_1 folder structure. Image frames (left_frames) for each sequence can be downloaded from  EndoVIS18 challange. The Q&A pairs (Classification and sentence), image extracted features and temporal extracted features are placed inside the vqa files. 
+        - seq_1
+            - left_frames - **[[`Download from Challange website`]()]**
+            - vqa **[[`download`]()]**
+
+    - `VQA-Med/` : **[[`Download`]()]**
+- `models/`: 
+    - VisualBertResMLP.py : Our proposed encoder.
+    - visualBertClassification.py : VisualBert encoder-based classification model.
+    - VisualBertResMLPClassification.py : VisualBert ResMLP encoder-based classification model.
+    - VisualBertSentence.py : VisualBert encoder + Transformer decoder sentence generation model.
+    - VisualBertResMLPSentence.py : VisualBert ResMLP encoder + Transformer decoder sentence generation model.
+- train_classification.py
+- test_sentence.py
+- eval_sentence.py
+- utils.py
 
 ---
 ## Dataset
