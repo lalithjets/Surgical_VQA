@@ -1,2 +1,0 @@
-conda activate base
-source venv/bin/acitvate
