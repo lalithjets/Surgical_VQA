@@ -53,29 +53,24 @@ We design a Surgical-VQA algorithm to answer questionnaires on surgical tools, t
 
 ---
 
-## Library Prerequisities
-TBA
+### Conda Environment
 
-## Setup (From an Env File)
-TBA
-<!-- We have provided environment files for installation using conda -->
-
-### Using Conda
-TBA
-<!-- ```bash
-conda env create -f environment.yml
-``` -->
+```bash
+conda env create --name svqa --file=env.yml
+```
 
 ---
-## Directory setup
+## Directory Setup
 <!---------------------------------------------------------------------------------------------------------------->
 In this project, we implement our method using the Pytorch and DGL library, the structure is as follows: 
 
 - `checkpoints/`: Contains trained weights.
 - `dataloaders/`: Contains dataloader for classification and sentence model.
 - `dataset/`
-    - `bertvocab/` : TBA
-    - `cholec80/` : TBA
+    - `bertvocab/`
+        - v2 : bert tokernizer
+    - `cholec80/` :
+        - 
     - `faimed3d/` : TBA
     - `instrument18/` : TBA
     - `VQA-Med/` : TBA
