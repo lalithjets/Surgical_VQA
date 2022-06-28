@@ -74,10 +74,10 @@ In this project, we implement our method using the Pytorch and DGL library, the 
     - `cholec80/` : TBA
     - `instrument18/` : seq_{1-7,9-12,14-16}. Each sequence folder follows the following seq_1 folder structure. Image frames (left_frames) for each sequence can be downloaded from  EndoVIS18 challange. The Q&A pairs (Classification and sentence), image extracted features and temporal extracted features are placed inside the vqa files. 
         - seq_1
-            - left_frames - **[[`Download from Challange website`]()]**
-            - vqa **[[`download`]()]**
+            - left_frames
+            - vqa
 
-    - `VQA-Med/` : **[[`Download`]()]**
+    - `VQA-Med/`
 - `models/`: 
     - VisualBertResMLP.py : Our proposed encoder.
     - visualBertClassification.py : VisualBert encoder-based classification model.
@@ -93,37 +93,43 @@ In this project, we implement our method using the Pytorch and DGL library, the 
 ## Dataset
 
 1. Med-VQA (C1, C2 & C3)
-    - Image frame and question & answer pairs - **[[`MedFuse Med-VQA Dataset`]()]**
+    - Image frame and question & answer pairs - **[[`MedFuse Med-VQA Dataset (link to public dataset will be added shortly)`]()]**
 2. EndoVis-18-VQA
     - Images
-    - Classification Task: Question & answer pairs annotation - **[[`EndoVis-18-VQA (C)`]()]**
-    - Sentence Task: Question & answer pairs annotation - **[[`EndoVis-18-VQA (S)`]()]**
+    - Classification Task: Question & answer pairs annotation - **[[`EndoVis-18-VQA (C) (To be added shortly)`]()]**
+    - Sentence Task: Question & answer pairs annotation - **[[`EndoVis-18-VQA (S) (To be added shortly)`]()]**
 3. Cholec80-VQA (C)
     - Images
-    - Classification Task: Question & answer pairs annotation - **[[`Cholec80-VQA (C)`]()]**
-    - Sentence Task: Question & answer pairs annotation - **[[`Cholec80-VQA (S)`]()]**
+    - Classification Task: Question & answer pairs annotation - **[[`Cholec80-VQA (C) (To be added shortly)`]()]**
+    - Sentence Task: Question & answer pairs annotation - **[[`Cholec80-VQA (S) (To be added shortly)`]()]**
 ---
 
 ### Run training
-
 - Classification
-
-```bash
-python3 train_classification.py
-```
+    - Arguments: 
+        - TBA
+    
+    ```bash
+    python3 train_classification.py
+    ```
 
 - Sentence
-```bash
-python3 train_sentence.py
-```
+    - Arguments: 
+        - TBA
+    
+    ```bash
+    python3 train_sentence.py
+    ```
 
 ---
 ## Evaluation
-
-
-```bash
-python3 evaluation.py
-```
+- Sentence    
+    - Arguments: 
+        - TBA
+    
+    ```bash
+    python3 evaluation.py
+    ```
 
 ---
 ## References
