@@ -289,16 +289,16 @@ if __name__ == '__main__':
         Train and test for miccai dataset
         '''
         if args.tokenizer_ver == 'v1':
-            tokenizer = BertTokenizer.from_pretrained('./dataset/bertvocab/v1/bert-miccai18/')
+            tokenizer = BertTokenizer.from_pretrained('./dataset/bertvocab/v1/bert-EndoVis-18-VQA/')
         elif args.tokenizer_ver == 'v2':
-            tokenizer = BertTokenizer.from_pretrained('./dataset/bertvocab/v2/bert-miccai18/')
+            tokenizer = BertTokenizer.from_pretrained('./dataset/bertvocab/v2/bert-EndoVis-18-VQA/')
         elif args.tokenizer_ver == 'v3':
-            tokenizer = BertTokenizer.from_pretrained('./dataset/bertvocab/v3/bert-miccai18/', do_lower_case=True)
+            tokenizer = BertTokenizer.from_pretrained('./dataset/bertvocab/v3/bert-EndoVis-18-VQA/', do_lower_case=True)
         answer_len = 20
         dataset_ver = 'complex1.2'
         train_seq = [2, 3, 4, 6, 7, 9, 10, 11, 12, 14, 15]
         val_seq = [1, 5, 16]
-        folder_head = 'dataset/instruments18/seq_'
+        folder_head = 'dataset/EndoVis-18-VQA/seq_'
         folder_tail = '/vqa/'+dataset_ver+'/*.txt'
         
         train_dataset = EndoVis18VQASentence(train_seq, folder_head, folder_tail, patch_size = args.patch_size)
@@ -311,16 +311,16 @@ if __name__ == '__main__':
         Train and test for miccai video dataset
         '''
         if args.tokenizer_ver == 'v1':
-            tokenizer = BertTokenizer.from_pretrained('./dataset/bertvocab/v1/bert-miccai18/')
+            tokenizer = BertTokenizer.from_pretrained('./dataset/bertvocab/v1/bert-EndoVis-18-VQA/')
         elif args.tokenizer_ver == 'v2':
-            tokenizer = BertTokenizer.from_pretrained('./dataset/bertvocab/v2/bert-miccai18/')
+            tokenizer = BertTokenizer.from_pretrained('./dataset/bertvocab/v2/bert-EndoVis-18-VQA/')
         elif args.tokenizer_ver == 'v3':
-            tokenizer = BertTokenizer.from_pretrained('./dataset/bertvocab/v3/bert-miccai18/', do_lower_case=True)
+            tokenizer = BertTokenizer.from_pretrained('./dataset/bertvocab/v3/bert-EndoVis-18-VQA/', do_lower_case=True)
         answer_len = 20
         dataset_ver = 'complex1.2'
         train_seq = [2, 3, 4, 6, 7, 9, 10, 11, 12, 14, 15]
         val_seq = [1, 5, 16]
-        folder_head = 'dataset/instruments18/seq_'
+        folder_head = 'dataset/EndoVis-18-VQA/seq_'
         folder_tail = '/vqa/'+dataset_ver+'/*.txt'
         
         train_dataset = EndoVis18VidVQASentence(train_seq, folder_head, folder_tail, temporal_size = args.temporal_size, patch_size = args.patch_size)
@@ -333,16 +333,16 @@ if __name__ == '__main__':
         Train and test for cholec dataset
         '''
         if args.tokenizer_ver == 'v1':
-            tokenizer = BertTokenizer.from_pretrained('./dataset/bertvocab/v1/bert-cholec80/')
+            tokenizer = BertTokenizer.from_pretrained('./dataset/bertvocab/v1/bert-Cholec80-VQA/')
         elif args.tokenizer_ver == 'v2':
-            tokenizer = BertTokenizer.from_pretrained('./dataset/bertvocab/v2/bert-cholec80/')
+            tokenizer = BertTokenizer.from_pretrained('./dataset/bertvocab/v2/bert-Cholec80-VQA/')
         elif args.tokenizer_ver == 'v3':
-            tokenizer = BertTokenizer.from_pretrained('./dataset/bertvocab/v3/bert-cholec80/', do_lower_case=True)
+            tokenizer = BertTokenizer.from_pretrained('./dataset/bertvocab/v3/bert-Cholec80-VQA/', do_lower_case=True)
         answer_len = 20
         dataset_ver = 'complex2'
         train_seq = [1, 2, 3, 4, 6, 7, 8, 9, 10, 13, 14, 15, 16, 18, 20, 21, 22, 23, 24, 25, 28, 29, 30, 32, 33, 34, 35, 36, 37, 38, 39, 40]
         val_seq = [5, 11, 12, 17, 19, 26, 27, 31]
-        folder_head = 'dataset/cholec80/'+dataset_ver+'/'
+        folder_head = 'dataset/Cholec80-VQA/'+dataset_ver+'/'
         folder_tail = '/*.txt'
 
         train_dataset = Cholec80VQASentence(train_seq, folder_head, folder_tail, patch_size = args.patch_size)
@@ -355,16 +355,16 @@ if __name__ == '__main__':
         Train and test for cholec video dataset
         '''
         if args.tokenizer_ver == 'v1':
-            tokenizer = BertTokenizer.from_pretrained('./dataset/bertvocab/v1/bert-cholec80/')
+            tokenizer = BertTokenizer.from_pretrained('./dataset/bertvocab/v1/bert-Cholec80-VQA/')
         elif args.tokenizer_ver == 'v2':
-            tokenizer = BertTokenizer.from_pretrained('./dataset/bertvocab/v2/bert-cholec80/')
+            tokenizer = BertTokenizer.from_pretrained('./dataset/bertvocab/v2/bert-Cholec80-VQA/')
         elif args.tokenizer_ver == 'v3':
-            tokenizer = BertTokenizer.from_pretrained('./dataset/bertvocab/v3/bert-cholec80/', do_lower_case=True)
+            tokenizer = BertTokenizer.from_pretrained('./dataset/bertvocab/v3/bert-Cholec80-VQA/', do_lower_case=True)
         answer_len = 20
         dataset_ver = 'complex2'
         train_seq = [1, 2, 3, 4, 6, 7, 8, 9, 10, 13, 14, 15, 16, 18, 20, 21, 22, 23, 24, 25, 28, 29, 30, 32, 33, 34, 35, 36, 37, 38, 39, 40]
         val_seq = [5, 11, 12, 17, 19, 26, 27, 31]
-        folder_head = 'dataset/cholec80/'+dataset_ver+'/'
+        folder_head = 'dataset/Cholec80-VQA/'+dataset_ver+'/'
         folder_tail = '/*.txt'
 
         train_dataset = Cholec80VidVQASentence(train_seq, folder_head, folder_tail, temporal_size = args.temporal_size, patch_size = args.patch_size)

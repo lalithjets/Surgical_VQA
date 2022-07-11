@@ -70,14 +70,48 @@ In this project, we implement our method using the Pytorch and DGL library, the 
     - dataloaderSentence.py : Dataloader for sentence task.
 - `dataset/`
     - `bertvocab/`
-        - v2 : bert tokernizer
-    - `cholec80/` : TBA
-    - `instrument18/` : seq_{1-7,9-12,14-16}. Each sequence folder follows the following seq_1 folder structure. Image frames (left_frames) for each sequence can be downloaded from  EndoVIS18 challange. The Q&A pairs (Classification and sentence), image extracted features and temporal extracted features are placed inside the vqa files. 
-        - seq_1
-            - left_frames
-            - vqa
+        - `v2` : bert tokernizer
+    - `Cholec80-VQA/`
+        - `Classification`: 1-40 videos Classification Q&A pairs
+            - `1`
+            - `.....`
+            - `40`
+        - `Sentence`: 1-40 videos Sentence Q&A pairs
+            - `1`
+            - `.....`
+            - `40`
+        - `cropped_images`: contains 1-40 video folders.
+            - `1`: contains image frames extracted from video.
+                - `vqa`:  Contains img_features extracted from each frame with different patch size.
+                    - `img_features`
+                        - `1x1`: img_features extracted with a patch size of 1x1
+                        - `2x2`: img_features extracted with a patch size of 2x2
+                        - `3x3`: img_features extracted with a patch size of 3x3
+                        - `4x4`: img_features extracted with a patch size of 4x4
+                        - `5x5`: img_features extracted with a patch size of 5x5
+                - `0.png`
+                - `1.png`
+                - `.....`
+            - `.....`
+            - `40`
+    - `EndoVis-18-VQA/` : seq_{1-7,9-12,14-16}. Each sequence folder follows the following seq_1 folder structure. 
+        - `seq_1`: 
+            - `left_frames`: Image frames (left_frames) for each sequence can be downloaded from  EndoVIS18 challange.
+            - `vqa`
+                - `Classification`: Classification Q&A pairs.
+                - `Sentence`: Sentence Q&A pairs.
+                - `img_features`: Contains img_features extracted from each frame with different patch size.
+                    - `1x1`: img_features extracted with a patch size of 1x1
+                    - `2x2`: img_features extracted with a patch size of 2x2
+                    - `3x3`: img_features extracted with a patch size of 3x3
+                    - `4x4`: img_features extracted with a patch size of 4x4
+                    - `5x5`: img_features extracted with a patch size of 5x5
+        - `....`
+        - `seq_16`
 
     - `VQA-Med/`
+    - `feature_extraction_Cholec80-VQA.py`: Used to extract features (based on patch size) for Cholec80-VQA images.
+
 - `models/`: 
     - VisualBertResMLP.py : Our proposed encoder.
     - visualBertClassification.py : VisualBert encoder-based classification model.
@@ -94,14 +128,14 @@ In this project, we implement our method using the Pytorch and DGL library, the 
 
 1. Med-VQA (C1, C2 & C3)
     - Image frame and question & answer pairs - **[[`MedFuse Med-VQA Dataset (link to public dataset will be added shortly)`]()]**
-2. EndoVis-18-VQA
+2. EndoVis-18-VQA **[[`EndoVis-18-VQA Q&A pair annotation`](https://drive.google.com/drive/folders/1hu_yK27Xz2_lvjjZ97-WF2MK_JO14MWI?usp=sharing)]**
     - Images
-    - Classification Task: Question & answer pairs annotation - **[[`EndoVis-18-VQA (C) (To be added shortly)`]()]**
-    - Sentence Task: Question & answer pairs annotation - **[[`EndoVis-18-VQA (S) (To be added shortly)`]()]**
-3. Cholec80-VQA (C)
+    - Classification
+    - Sentence
+3. Cholec80-VQA **[[`Cholec80-VQA Q&A pair annotation`](https://drive.google.com/drive/folders/1QAqCEi_tMY9n3b37on0w6vr03cHom2ls?usp=sharing)]**
     - Images
-    - Classification Task: Question & answer pairs annotation - **[[`Cholec80-VQA (C) (To be added shortly)`]()]**
-    - Sentence Task: Question & answer pairs annotation - **[[`Cholec80-VQA (S) (To be added shortly)`]()]**
+    - Classification Task: Question & answer pairs annotation
+    - Sentence Task: Question & answer pairs annotation
 ---
 
 ### Run training

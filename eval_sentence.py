@@ -14,8 +14,6 @@ import torchvision.transforms as transforms
 from nltk.translate.bleu_score import corpus_bleu
 
 from utils import *
-# from dataloaders.dataloader_VQA_miccai18_3 import *
-# from dataloaders.dataloader_VQAMed19_3 import *
 from dataloaders.dataloaderSentence import *
 from models.VisualBertResMLPSentence import *
 
@@ -245,13 +243,13 @@ if __name__ == '__main__':
         Train and test for miccai dataset
         '''
         if args.tokenizer_ver == 'v2':
-            tokenizer = BertTokenizer.from_pretrained('./dataset/bertvocab/v2/bert-miccai18/')
+            tokenizer = BertTokenizer.from_pretrained('./dataset/bertvocab/v2/bert-EndoVis-18-VQA/')
         elif args.tokenizer_ver == 'v3':
-            tokenizer = BertTokenizer.from_pretrained('./dataset/bertvocab/v3/bert-miccai18/', do_lower_case=True)
+            tokenizer = BertTokenizer.from_pretrained('./dataset/bertvocab/v3/bert-EndoVis-18-VQA/', do_lower_case=True)
         answer_len = 20
         dataset_ver = 'complex1.2'
         val_seq = [1, 5, 16]
-        folder_head = 'dataset/instruments18/seq_'
+        folder_head = 'dataset/EndoVis-18-VQA/seq_'
         folder_tail = '/vqa/'+dataset_ver+'/*.txt'
         
         val_dataset = SurgicalSentenceVQADataset(val_seq, folder_head, folder_tail, patch_size = args.patch_size)
@@ -262,13 +260,13 @@ if __name__ == '__main__':
         Train and test for cholec dataset
         '''
         if args.tokenizer_ver == 'v2':
-            tokenizer = BertTokenizer.from_pretrained('./dataset/bertvocab/v2/bert-cholec80/')
+            tokenizer = BertTokenizer.from_pretrained('./dataset/bertvocab/v2/bert-Cholec80-VQA/')
         elif args.tokenizer_ver == 'v3':
-            tokenizer = BertTokenizer.from_pretrained('./dataset/bertvocab/v3/bert-cholec80/', do_lower_case=True)
+            tokenizer = BertTokenizer.from_pretrained('./dataset/bertvocab/v3/bert-Cholec80-VQA/', do_lower_case=True)
         answer_len = 20
         dataset_ver = 'complex2'
         val_seq = [5, 11, 12, 17, 19, 26, 27, 31]
-        folder_head = 'dataset/cholec80/'+dataset_ver+'/'
+        folder_head = 'dataset/Cholec80-VQA/'+dataset_ver+'/'
         folder_tail = '/*.txt'
 
         val_dataset = SurgicalSentenceC80VQADataset(val_seq, folder_head, folder_tail, patch_size = args.patch_size)
@@ -295,13 +293,13 @@ if __name__ == '__main__':
         Train and test for miccai video dataset
         '''
         if args.tokenizer_ver == 'v2':
-            tokenizer = BertTokenizer.from_pretrained('./dataset/bertvocab/v2/bert-miccai18/')
+            tokenizer = BertTokenizer.from_pretrained('./dataset/bertvocab/v2/bert-EndoVis-18-VQA/')
         elif args.tokenizer_ver == 'v3':
-            tokenizer = BertTokenizer.from_pretrained('./dataset/bertvocab/v3/bert-miccai18/', do_lower_case=True)
+            tokenizer = BertTokenizer.from_pretrained('./dataset/bertvocab/v3/bert-EndoVis-18-VQA/', do_lower_case=True)
         answer_len = 20
         dataset_ver = 'complex1.2'
         val_seq = [1, 5, 16]
-        folder_head = 'dataset/instruments18/seq_'
+        folder_head = 'dataset/EndoVis-18-VQA/seq_'
         folder_tail = '/vqa/'+dataset_ver+'/*.txt'
         
         val_dataset = SurgicalSentenceVideoVQADataset(val_seq, folder_head, folder_tail, temporal_size = args.temporal_size, patch_size = args.patch_size)
@@ -312,13 +310,13 @@ if __name__ == '__main__':
         Train and test for cholec video dataset
         '''
         if args.tokenizer_ver == 'v2':
-            tokenizer = BertTokenizer.from_pretrained('./dataset/bertvocab/v2/bert-cholec80/')
+            tokenizer = BertTokenizer.from_pretrained('./dataset/bertvocab/v2/bert-Cholec80-VQA/')
         elif args.tokenizer_ver == 'v3':
-            tokenizer = BertTokenizer.from_pretrained('./dataset/bertvocab/v3/bert-cholec80/', do_lower_case=True)
+            tokenizer = BertTokenizer.from_pretrained('./dataset/bertvocab/v3/bert-Cholec80-VQA/', do_lower_case=True)
         answer_len = 20
         dataset_ver = 'complex2'
         val_seq = [5, 11, 12, 17, 19, 26, 27, 31]
-        folder_head = 'dataset/cholec80/'+dataset_ver+'/'
+        folder_head = 'dataset/Cholec80-VQA/'+dataset_ver+'/'
         folder_tail = '/*.txt'
 
         val_dataset = SurgicalSentenceC80VideoVQADataset(val_seq, folder_head, folder_tail, temporal_size = args.temporal_size, patch_size = args.patch_size)
@@ -340,32 +338,3 @@ if __name__ == '__main__':
     metrics = evaluate_transformer(args, val_dataloader, tokenizer, model, answer_len, len(tokenizer))
         # print("Epoch {} : BLEU-1 {:.6f} BLEU-2 {:.6f} BLEU-3 {:.6f} BLEU-4 {:.6f}".format(epoch, metrics["Bleu_1"],  metrics["Bleu_2"],  metrics["Bleu_3"],  metrics["Bleu_4"]))
 
-
-
-
-     # DataLoader
-    # transform = transforms.Compose([
-    #                                 transforms.Resize((300,256)),
-    #                                 transforms.ToTensor(),
-    #                                 transforms.Normalize(mean=[0.485, 0.456, 0.406],std=[0.229, 0.224, 0.225])
-    #                                 ])
-    
-    # # MICCAI18 dataset
-    # val_seq = [1, 5, 16]
-    # folder_head = 'dataset/instruments18/seq_'
-    # folder_tail = '/vqa/complex/*.txt'
-    # answer_len = 20
-    # val_dataset = SurgicalSentenceVQADataset(val_seq, folder_head, folder_tail, transform=transform)
-    # val_dataloader = DataLoader(dataset=val_dataset, batch_size= 1, shuffle=False)
-    # tokenizer = BertTokenizer.from_pretrained('./dataset/bertvocab/v1/bert-miccai18/bert-miccai18-vocab.txt')
-
-    # MEDVQA dataset
-    # val_folder = 'dataset/VQA-Med/ImageClef-2019-VQA-Med-Validation/'
-    # val_img_folder = 'Val_images/'
-    # val_QA = 'QAPairsByCategory/C4_Abnormality_val.txt'
-    # val_dataset = VQA_Med19Sentence(val_folder, val_img_folder, val_QA, patch_size = args.patch_size)
-    # val_dataloader = DataLoader(dataset=val_dataset, batch_size= 1, shuffle=False)
-    # answer_len = 50
-    # tokenizer = BertTokenizer.from_pretrained('./dataset/bertvocab/v2/bert-medvqa/', do_lower_case=True)
-    # vocab_size = len(tokenizer)
-    # print(vocab_size)

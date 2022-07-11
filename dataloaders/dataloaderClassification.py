@@ -84,8 +84,8 @@ class EndoVis18VQAClassification(Dataset):
     '''
     	seq: train_seq  = [2, 3, 4, 6, 7, 9, 10, 11, 12, 14, 15]
     	     val_seq    = [1, 5, 16]
-    	folder_head     = 'dataset/instruments18/seq_'
-    	folder_tail     = '/vqa/simple/*.txt'
+    	folder_head     = 'dataset/EndoVis-18-VQA/seq_'
+    	folder_tail     = '/vqa/Classification/*.txt'
     	patch_size      = 1/2/3/4/5
     '''
     def __init__(self, seq, folder_head, folder_tail, patch_size=4):
@@ -134,8 +134,8 @@ class EndoVis18VidVQAClassification(Dataset):
     '''
     	seq: train_seq  = [2, 3, 4, 6, 7, 9, 10, 11, 12, 14, 15]
     	     val_seq    = [1, 5, 16]
-    	folder_head     = 'dataset/instruments18/seq_'
-    	folder_tail     = '/vqa/simple/*.txt'
+    	folder_head     = 'dataset/EndoVis-18-VQA/seq_'
+    	folder_tail     = '/vqa/Classification/*.txt'
     	patch_size      = 1/2/3/4/5
         temporal_size   = 2/3/4/5
     '''
@@ -187,7 +187,7 @@ class Cholec80VQAClassification(Dataset):
     	seq: train_seq  = ['1','2','3','4','6','7','8','9','10','13','14','15','16','18','20',
                           '21','22','23','24','25','28','29','30','32','33','34','35','36','37','38','39','40']
              val_seq    = ['5','11','12','17','19','26','27','31']
-    	folder_head     = 'dataset/cholec80/simple2/'
+    	folder_head     = 'dataset/Cholec80-VQA/Classification/'
 	    folder_tail     = '/*.txt'
 	    patch_size      = 1/2/3/4/5
     '''
@@ -242,7 +242,7 @@ class Cholec80VidVQAClassification(Dataset):
     	seq: train_seq  = ['1','2','3','4','6','7','8','9','10','13','14','15','16','18','20',
                           '21','22','23','24','25','28','29','30','32','33','34','35','36','37','38','39','40']
              val_seq    = ['5','11','12','17','19','26','27','31']
-    	folder_head     = 'dataset/cholec80/simple2/'
+    	folder_head     = 'dataset/Cholec80-VQA/Classification/'
 	    folder_tail     = '/*.txt'
 	    patch_size      = 1/2/3/4/5
         temporal_size   = 1/2/3/4/5

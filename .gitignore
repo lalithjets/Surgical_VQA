@@ -4,11 +4,10 @@ dataset/.ipynb_checkpoints/
 dataset/bertvocab/v1/
 dataset/bertvocab/v3/
 dataset/bertvocab/*.txt
-dataset/cholec80
+dataset/Cholec80-VQA
 dataset/faimed3d
-dataset/instruments18
+dataset/EndoVis-18-VQA
 dataset/VQA-Med
-dataset/*py
 dataset/*.ipynb
 
 
