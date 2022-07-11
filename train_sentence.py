@@ -138,7 +138,7 @@ def validate(args, val_loader, model, criterion, tokenizer, answer_len):
     # explicitly disable gradient calculation to avoid CUDA memory error
     with torch.no_grad():
         
-        for i, (visual_features, q, a) in enumerate(val_loader,0):
+        for i, (_, visual_features, q, a) in enumerate(val_loader,0):
             
             # prepare questions
             questions = []
@@ -295,7 +295,7 @@ if __name__ == '__main__':
         elif args.tokenizer_ver == 'v3':
             tokenizer = BertTokenizer.from_pretrained('./dataset/bertvocab/v3/bert-EndoVis-18-VQA/', do_lower_case=True)
         answer_len = 20
-        dataset_ver = 'complex1.2'
+        dataset_ver = 'Sentence'
         train_seq = [2, 3, 4, 6, 7, 9, 10, 11, 12, 14, 15]
         val_seq = [1, 5, 16]
         folder_head = 'dataset/EndoVis-18-VQA/seq_'
@@ -317,7 +317,7 @@ if __name__ == '__main__':
         elif args.tokenizer_ver == 'v3':
             tokenizer = BertTokenizer.from_pretrained('./dataset/bertvocab/v3/bert-EndoVis-18-VQA/', do_lower_case=True)
         answer_len = 20
-        dataset_ver = 'complex1.2'
+        dataset_ver = 'Sentence'
         train_seq = [2, 3, 4, 6, 7, 9, 10, 11, 12, 14, 15]
         val_seq = [1, 5, 16]
         folder_head = 'dataset/EndoVis-18-VQA/seq_'
@@ -339,7 +339,7 @@ if __name__ == '__main__':
         elif args.tokenizer_ver == 'v3':
             tokenizer = BertTokenizer.from_pretrained('./dataset/bertvocab/v3/bert-Cholec80-VQA/', do_lower_case=True)
         answer_len = 20
-        dataset_ver = 'complex2'
+        dataset_ver = 'Sentence'
         train_seq = [1, 2, 3, 4, 6, 7, 8, 9, 10, 13, 14, 15, 16, 18, 20, 21, 22, 23, 24, 25, 28, 29, 30, 32, 33, 34, 35, 36, 37, 38, 39, 40]
         val_seq = [5, 11, 12, 17, 19, 26, 27, 31]
         folder_head = 'dataset/Cholec80-VQA/'+dataset_ver+'/'

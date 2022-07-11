@@ -270,7 +270,7 @@ class Decoder(nn.Module):
 '''
 VisualBertResMLP Encoder + Transformer decoder
 '''
-class visualBertResMLPSentence(nn.Module):
+class VisualBertResMLPSentence(nn.Module):
 
     def __init__(self, vocab_size, embed_dim, encoder_layers, decoder_layers, dropout=0.1, n_heads=8, token_size = 26, answer_len = 20):
         '''
