@@ -56,7 +56,7 @@ We design a Surgical-VQA algorithm to answer questionnaires on surgical tools, t
 ### Conda Environment
 
 ```bash
-conda env create --name svqa --file=env.yml
+conda env create --name svqa --file=env.yaml
 ```
 
 ---
