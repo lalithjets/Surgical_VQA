@@ -204,7 +204,8 @@ def evaluate_transformer(args, val_dataloader, tokenizer, model, answer_len, voc
         for item in hypotheses[i]: hyp_str += item + ' '
         df = df.append({'Img': file_names[i], 'Ground Truth': ref_str, 'Prediction': hyp_str}, ignore_index=True)
     
-    df.to_csv(args.checkpoint_dir + args.checkpoint_dir.split('/')[1] + '_' + args.checkpoint_dir.split('/')[2] + '_eval.csv')
+    if args.checkpoint_dir == None: pass
+    else: df.to_csv(args.checkpoint_dir + args.checkpoint_dir.split('/')[1] + '_' + args.checkpoint_dir.split('/')[2] + '_eval.csv')
 
     # Calculate BLEU1~4
     metrics = {}
@@ -228,10 +229,9 @@ if __name__ == '__main__':
     
     parser = argparse.ArgumentParser(description='VisualQuestionAnswer')
     parser.add_argument('--beam_size',      type=int,                   default=1,                          help='beam_size.')
-    parser.add_argument('--checkpoint_dir', default= 'checkpoints/sen_v3_3_1x1/med_vqa/',        help='m18_1.2/med_vqa')
+    parser.add_argument('--checkpoint_dir', default= 'None',        help='folder to store predicted vs GT in csv')
     parser.add_argument('--checkpoint',     default='checkpoints/sen_v3_2_1x1/c80/epoch_42.pth.tar',        help='model checkpoint.')
     parser.add_argument('--dataset_type',   default= 'c80',                                                 help='m18/c80/med_vqa/m18_vid/c80_vid')
-    parser.add_argument('--transformer_ver',default= 'v3',                                                  help='v1/v2/v3/vbrs')
     parser.add_argument('--tokenizer_ver',  default= 'v2',                                                  help='v1/v2/v3')
     parser.add_argument('--patch_size',     default= 1,                                                     help='1/2/3/4/5')
     parser.add_argument('--temporal_size',  default= 3,                                                     help='1/2/3/4/5')
@@ -242,41 +242,47 @@ if __name__ == '__main__':
         '''
         Train and test for miccai dataset
         '''
-        if args.tokenizer_ver == 'v2':
+        if args.tokenizer_ver == 'v1':
+            tokenizer = BertTokenizer.from_pretrained('./dataset/bertvocab/v1/bert-EndoVis-18-VQA/')
+        elif args.tokenizer_ver == 'v2':
             tokenizer = BertTokenizer.from_pretrained('./dataset/bertvocab/v2/bert-EndoVis-18-VQA/')
         elif args.tokenizer_ver == 'v3':
             tokenizer = BertTokenizer.from_pretrained('./dataset/bertvocab/v3/bert-EndoVis-18-VQA/', do_lower_case=True)
         answer_len = 20
-        dataset_ver = 'complex1.2'
+        dataset_ver = 'Sentence'
         val_seq = [1, 5, 16]
         folder_head = 'dataset/EndoVis-18-VQA/seq_'
         folder_tail = '/vqa/'+dataset_ver+'/*.txt'
         
-        val_dataset = SurgicalSentenceVQADataset(val_seq, folder_head, folder_tail, patch_size = args.patch_size)
+        val_dataset = EndoVis18VQASentence(val_seq, folder_head, folder_tail, patch_size = args.patch_size)
         val_dataloader = DataLoader(dataset=val_dataset, batch_size= 1, shuffle=False)
 
     elif args.dataset_type == 'c80':
         '''
         Train and test for cholec dataset
         '''
-        if args.tokenizer_ver == 'v2':
+        if args.tokenizer_ver == 'v1':
+            tokenizer = BertTokenizer.from_pretrained('./dataset/bertvocab/v1/bert-Cholec80-VQA/')
+        elif args.tokenizer_ver == 'v2':
             tokenizer = BertTokenizer.from_pretrained('./dataset/bertvocab/v2/bert-Cholec80-VQA/')
         elif args.tokenizer_ver == 'v3':
             tokenizer = BertTokenizer.from_pretrained('./dataset/bertvocab/v3/bert-Cholec80-VQA/', do_lower_case=True)
         answer_len = 20
-        dataset_ver = 'complex2'
+        dataset_ver = 'Sentence'
         val_seq = [5, 11, 12, 17, 19, 26, 27, 31]
         folder_head = 'dataset/Cholec80-VQA/'+dataset_ver+'/'
         folder_tail = '/*.txt'
 
-        val_dataset = SurgicalSentenceC80VQADataset(val_seq, folder_head, folder_tail, patch_size = args.patch_size)
+        val_dataset = Cholec80VQASentence(val_seq, folder_head, folder_tail, patch_size = args.patch_size)
         val_dataloader = DataLoader(dataset=val_dataset, batch_size= 1, shuffle=False)
 
     elif args.dataset_type == 'med_vqa':
         '''
         Train and test for MED_VQA_S
         '''
-        if args.tokenizer_ver == 'v2':
+        if args.tokenizer_ver == 'v1':
+            tokenizer = BertTokenizer.from_pretrained('./dataset/bertvocab/v1/bert-medvqa/')
+        elif args.tokenizer_ver == 'v2':
             tokenizer = BertTokenizer.from_pretrained('./dataset/bertvocab/v2/bert-medvqa/')
         elif args.tokenizer_ver == 'v3':
             tokenizer = BertTokenizer.from_pretrained('./dataset/bertvocab/v3/bert-medvqa/', do_lower_case=True)
@@ -285,14 +291,16 @@ if __name__ == '__main__':
         val_img_folder = 'Val_images/'
         val_QA = 'QAPairsByCategory/C4_Abnormality_val.txt'
 
-        val_dataset = VQA_Med19Sentence(val_folder, val_img_folder, val_QA, patch_size = args.patch_size)
+        val_dataset = MedVQASentence(val_folder, val_img_folder, val_QA, patch_size = args.patch_size)
         val_dataloader = DataLoader(dataset=val_dataset, batch_size= 1, shuffle=False)
 
     elif args.dataset_type == 'm18_vid':
         '''
         Train and test for miccai video dataset
         '''
-        if args.tokenizer_ver == 'v2':
+        if args.tokenizer_ver == 'v1':
+            tokenizer = BertTokenizer.from_pretrained('./dataset/bertvocab/v1/bert-EndoVis-18-VQA/')
+        elif args.tokenizer_ver == 'v2':
             tokenizer = BertTokenizer.from_pretrained('./dataset/bertvocab/v2/bert-EndoVis-18-VQA/')
         elif args.tokenizer_ver == 'v3':
             tokenizer = BertTokenizer.from_pretrained('./dataset/bertvocab/v3/bert-EndoVis-18-VQA/', do_lower_case=True)
@@ -302,14 +310,16 @@ if __name__ == '__main__':
         folder_head = 'dataset/EndoVis-18-VQA/seq_'
         folder_tail = '/vqa/'+dataset_ver+'/*.txt'
         
-        val_dataset = SurgicalSentenceVideoVQADataset(val_seq, folder_head, folder_tail, temporal_size = args.temporal_size, patch_size = args.patch_size)
+        val_dataset = EndoVis18VidVQASentence(val_seq, folder_head, folder_tail, temporal_size = args.temporal_size, patch_size = args.patch_size)
         val_dataloader = DataLoader(dataset=val_dataset, batch_size= 1, shuffle=False)
     
     elif args.dataset_type == 'c80_vid':
         '''
         Train and test for cholec video dataset
         '''
-        if args.tokenizer_ver == 'v2':
+        if args.tokenizer_ver == 'v1':
+            tokenizer = BertTokenizer.from_pretrained('./dataset/bertvocab/v1/bert-Cholec80-VQA/')
+        elif args.tokenizer_ver == 'v2':
             tokenizer = BertTokenizer.from_pretrained('./dataset/bertvocab/v2/bert-Cholec80-VQA/')
         elif args.tokenizer_ver == 'v3':
             tokenizer = BertTokenizer.from_pretrained('./dataset/bertvocab/v3/bert-Cholec80-VQA/', do_lower_case=True)
@@ -319,7 +329,7 @@ if __name__ == '__main__':
         folder_head = 'dataset/Cholec80-VQA/'+dataset_ver+'/'
         folder_tail = '/*.txt'
 
-        val_dataset = SurgicalSentenceC80VideoVQADataset(val_seq, folder_head, folder_tail, temporal_size = args.temporal_size, patch_size = args.patch_size)
+        val_dataset = Cholec80VidVQASentence(val_seq, folder_head, folder_tail, temporal_size = args.temporal_size, patch_size = args.patch_size)
         val_dataloader = DataLoader(dataset=val_dataset, batch_size= 1, shuffle=False)
 
     # fix randoms
