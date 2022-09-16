@@ -9,7 +9,7 @@
 </samp>   
 
 ---
-| **[[```arXiv```](<https://arxiv.org/abs/2206.11053>)]** | **[[```Paper```](<>)]** | **[[```Video```](<https://youtu.be/4Db8NSEW-FY>)]**|
+| **[[```arXiv```](<https://arxiv.org/abs/2206.11053>)]** | **[[```Paper```](<https://link.springer.com/chapter/10.1007/978-3-031-16449-1_4#citeas>)]** | **[[```Video```](<https://youtu.be/4Db8NSEW-FY>)]**|
 |:-------------------:|:-------------------:|:-------------------:|
     
 The International Conference on Medical Image Computing and Computer Assisted Intervention (MICCAI) 2022
@@ -19,14 +19,26 @@ The International Conference on Medical Image Computing and Computer Assisted In
     
 ---
 
-If you find our code or paper useful, please use the following arxiv citation (we will update it to MICCAI conference citations once it is available):
+If you find our code or paper useful, please cite our paper:
 
 ```bibtex
-@article{seenivasan2022surgical,
-  title={Surgical-VQA: Visual Question Answering in Surgical Scenes using Transformer},
-  author={Seenivasan, Lalithkumar and Islam, Mobarakol and Krishna, Adithya and Ren, Hongliang},
-  journal={arXiv preprint arXiv:2206.11053},
-  year={2022}
+@InProceedings{10.1007/978-3-031-16449-1_4,
+author="Seenivasan, Lalithkumar
+and Islam, Mobarakol
+and Krishna, Adithya K.
+and Ren, Hongliang",
+editor="Wang, Linwei
+and Dou, Qi
+and Fletcher, P. Thomas
+and Speidel, Stefanie
+and Li, Shuo",
+title="Surgical-VQA: Visual Question Answering in Surgical Scenes Using Transformer",
+booktitle="Medical Image Computing and Computer Assisted Intervention -- MICCAI 2022",
+year="2022",
+publisher="Springer Nature Switzerland",
+address="Cham",
+pages="33--43",
+isbn="978-3-031-16449-1"
 }
 ```
 
