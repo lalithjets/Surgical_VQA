@@ -9,7 +9,7 @@
 </samp>   
 
 ---
-| **[[```arXiv```](<https://arxiv.org/abs/2206.11053>)]** | **[[```Paper```](<https://link.springer.com/chapter/10.1007/978-3-031-16449-1_4#citeas>)]** | **[[```Video```](<https://youtu.be/4Db8NSEW-FY>)]**|
+| **[[```arXiv```](<https://arxiv.org/abs/2206.11053>)]** | **[[```Paper```](<https://link.springer.com/chapter/10.1007/978-3-031-16449-1_4>)]** | **[[```Video```](<https://youtu.be/4Db8NSEW-FY>)]**|
 |:-------------------:|:-------------------:|:-------------------:|
     
 The International Conference on Medical Image Computing and Computer Assisted Intervention (MICCAI) 2022
