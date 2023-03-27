@@ -78,73 +78,13 @@ conda env create --name svqa --file=env.yaml
 
 ---
 ## Directory Setup
-<!---------------------------------------------------------------------------------------------------------------->
-In this project, we implement our method using the Pytorch and DGL library, the structure is as follows: 
-
-- `checkpoints/`: Contains trained weights.
-- `dataloaders/`: 
-    - dataloaderClassification.py : Dataloader for classification task.
-    - dataloaderSentence.py : Dataloader for sentence task.
-- `dataset/`
-    - `bertvocab/`
-        - `v2` : bert tokernizer
-    - `Cholec80-VQA/`
-        - `Classification`: 1-40 videos Classification Q&A pairs
-            - `1`
-            - `.....`
-            - `40`
-        - `Sentence`: 1-40 videos Sentence Q&A pairs
-            - `1`
-            - `.....`
-            - `40`
-        - `cropped_images`: contains 1-40 video folders.
-            - `1`: contains image frames extracted from video.
-                - `vqa`:  Contains img_features extracted from each frame with different patch size.
-                    - `img_features`
-                        - `1x1`: img_features extracted with a patch size of 1x1
-                        - `2x2`: img_features extracted with a patch size of 2x2
-                        - `3x3`: img_features extracted with a patch size of 3x3
-                        - `4x4`: img_features extracted with a patch size of 4x4
-                        - `5x5`: img_features extracted with a patch size of 5x5
-                - `0.png`
-                - `1.png`
-                - `.....`
-            - `.....`
-            - `40`
-    - `EndoVis-18-VQA/` : seq_{1-7,9-12,14-16}. Each sequence folder follows the following seq_1 folder structure. 
-        - `seq_1`: 
-            - `left_frames`: Image frames (left_frames) for each sequence can be downloaded from  EndoVIS18 challange.
-            - `vqa`
-                - `Classification`: Classification Q&A pairs.
-                - `Sentence`: Sentence Q&A pairs.
-                - `img_features`: Contains img_features extracted from each frame with different patch size.
-                    - `1x1`: img_features extracted with a patch size of 1x1
-                    - `2x2`: img_features extracted with a patch size of 2x2
-                    - `3x3`: img_features extracted with a patch size of 3x3
-                    - `4x4`: img_features extracted with a patch size of 4x4
-                    - `5x5`: img_features extracted with a patch size of 5x5
-        - `....`
-        - `seq_16`
-
-    - `VQA-Med/`
-    - `feature_extraction_Cholec80-VQA.py`: Used to extract features (based on patch size) for Cholec80-VQA images.
-
-- `models/`: 
-    - VisualBertResMLP.py : Our proposed encoder.
-    - visualBertClassification.py : VisualBert encoder-based classification model.
-    - VisualBertResMLPClassification.py : VisualBert ResMLP encoder-based classification model.
-    - VisualBertSentence.py : VisualBert encoder + Transformer decoder sentence generation model.
-    - VisualBertResMLPSentence.py : VisualBert ResMLP encoder + Transformer decoder sentence generation model.
-- train_classification.py
-- test_sentence.py
-- eval_sentence.py
-- utils.py
+Refer to 'directory_setup.txt' file.
 
 ---
 ## Dataset
 
 1. Med-VQA (C1, C2 & C3)
-    - Image frame and question & answer pairs - **[[`MedFuse Med-VQA Dataset (link to public dataset will be added shortly)`]()]**
+    - Image frame and question & answer pairs - **[[`Med-VQA Challenge`](https://ceur-ws.org/Vol-2380/paper_272.pdf)]** **[[`MedFuseNet Paper`](https://www.nature.com/articles/s41598-021-98390-1#ref-CR10)]**
 2. EndoVis-18-VQA **[[`EndoVis-18-VQA Q&A pair annotation`](https://drive.google.com/drive/folders/1hu_yK27Xz2_lvjjZ97-WF2MK_JO14MWI?usp=sharing)]**
     - Images
     - Classification
@@ -155,31 +95,103 @@ In this project, we implement our method using the Pytorch and DGL library, the 
     - Sentence Task: Question & answer pairs annotation
 ---
 
-### Run training
+## Training
 - Classification
     - Arguments: 
-        - TBA
+        - lr : EndoVis-18-VQA = 0.00001, Cholec80-VQA = 0.000005 and Med-VQA = 0.000005.
+        - dataset_type: EndoVis-18-VQA = 'm18', Cholec80-VQA = 'c80' and Med-VQA = 'med_vqa'.
+        - dataset_cat: Only for VQA-Med, Category 1 = 'cat1', Category 2 = 'cat2' and Category 3 = 'cat3'.
+        - transformer_ver: VisualBert = 'vb' and VisualBertResMLP= 'vbrm'.
+        - tokenizer_ver:  'v2'.
+        - patch_size: Depends on the patch size you are using, default is set to 5x5 patches.
+        - question_len: Depends on the question length you set, default is set to 25.
     
+    - Training VisualBert-based classifier on EndoVis18-VQA dataset:
     ```bash
-    python3 train_classification.py
+    python3 train_classification.py train.py --lr=0.00001 --checkpoint_dir='checkpoints/vb/m18/vb_' \
+                                             --dataset_type='m18' --patch_size=5 \
+                                             --tokenizer_ver='v2' --model_ver='vb'
+    ```
+    - Training VisualBert-based classifier on Cholec80-VQA dataset:
+    ```bash
+    python3 train_classification.py train.py --lr=0.000005 --checkpoint_dir='checkpoints/vb/c80/vb_' \
+                                             --dataset_type='c80' --patch_size=5 \
+                                             --tokenizer_ver='v2' --model_ver='vb'
+    ```
+    - Training VisualBert-based classifier on Med-VQA category 1 dataset:
+    ```bash
+    python3 train_classification.py train.py --lr=0.000005 --checkpoint_dir='checkpoints/vb/med-vqa/vb_' \
+                                             --dataset_type='med_vqa' --dataset_cat='cat1' --patch_size=5\
+                                             --tokenizer_ver='v2' --model_ver='vb'
+    ```
+    - Training VisualBertResMLP-based classifier on EndoVis18-VQA dataset:
+    ```bash
+    python3 train_classification.py train.py --lr=0.00001 --checkpoint_dir='checkpoints/vbrm/m18/vbrm_' \
+                                             --dataset_type='m18' --patch_size=5 \
+                                             --tokenizer_ver='v2' --model_ver='vbrm'
+    ```
+    - Training VisualBertResMLP-based classifier on Cholec80-VQA dataset:
+    ```bash
+    python3 train_classification.py train.py --lr=0.000005 --checkpoint_dir='checkpoints/vbrm/c80/vbrm_' \
+                                             --dataset_type='c80' --patch_size=5 \
+                                             --tokenizer_ver='v2' --model_ver='vbrm'
+    ```
+    - Training VisualBertResMLP-based classifier on Med-VQA category 1 dataset:
+    ```bash
+    python3 train_classification.py train.py --lr=0.000005 --checkpoint_dir='checkpoints/vbrm/med-vqa/vbrm_' \
+                                             --dataset_type='med_vqa' --dataset_cat='cat1' --patch_size=5\
+                                             --tokenizer_ver='v2' --model_ver='vbrm'
     ```
 
 - Sentence
     - Arguments: 
-        - TBA
-    
+        - lr : EndoVis-18-VQA = 0.00005 and Cholec80-VQA = 0.000001.
+        - dataset_type: EndoVis-18-VQA = 'm18', Cholec80-VQA = 'c80'.
+        - transformer_ver: VisualBert = 'vb' and VisualBertResMLP= 'vbrm'.
+        - tokenizer_ver:  'v2'.
+        - patch_size: Depends on the patch size you are using, default is set to 5x5 patches.
+        - question_len: Depends on the question length you set, default is set to 25.
+
+    - Training VisualBert-based sentence answer generator on EndoVis18-VQA dataset:
     ```bash
-    python3 train_sentence.py
+    python3 train_sentence.py train.py --lr=0.00001 --checkpoint_dir='checkpoints/vb_sen/m18/vb_' \
+                                             --dataset_type='m18' --patch_size=5 \
+                                             --tokenizer_ver='v2' --model_ver='vb'
+    ```
+    - Training VisualBert-based sentence answer generator on Cholec80-VQA dataset:
+    ```bash
+    python3 train_sentencen.py train.py --lr=0.000005 --checkpoint_dir='checkpoints/vb_sen/c80/vb_' \
+                                             --dataset_type='c80' --patch_size=5 \
+                                             --tokenizer_ver='v2' --model_ver='vb'
     ```
 
+    - Training VisualBertResMLP-based sentence answer generator  on EndoVis18-VQA dataset:
+    ```bash
+    python3 train_sentence.py train.py --lr=0.00001 --checkpoint_dir='checkpoints/vbrm_sen/m18/vbrm_' \
+                                             --dataset_type='m18' --patch_size=5 \
+                                             --tokenizer_ver='v2' --model_ver='vbrm'
+    ```
+    - Training VisualBertResMLP-based sentence answer generator  on Cholec80-VQA dataset:
+    ```bash
+    python3 train_sentence.py train.py --lr=0.000005 --checkpoint_dir='checkpoints/vbrm_sen/c80/vbrm_' \
+                                             --dataset_type='c80' --patch_size=5 \
+                                             --tokenizer_ver='v2' --model_ver='vbrm'
+    ```
 ---
 ## Evaluation
 - Sentence    
     - Arguments: 
-        - TBA
+        - checkpoint: checkpoint location
+        - checkpoint_dir: directory to store the generator sentences and goundtruth.
+        - beam_size: default=3
+        - dataset_type: EndoVis-18-VQA = 'm18', Cholec80-VQA = 'c80' and Med-VQA = 'med_vqa'.
+        - tokenizer_ver:  'v2'.
+        - patch_size: Depends on the patch size you are using, default is set to 5x5 patches.
     
     ```bash
-    python3 evaluation.py
+    python3 eval_sentence.py --checkpoint='checkpoints/vbrm_sen/m18/vbrm_Best.pth.tar' \
+                             -- checkpoint_dir='checkpoints/vbrm_sen/m18/'\
+                             -- beam_size=3 --dataset_type='m18' --tokenizer_ver='v2' --patch_size=5
     ```
 
 ---
@@ -197,5 +209,4 @@ Code adopted and modified from :
 
 ## Contact
 For any queries, please contact [Lalithkumar](mailto:lalithjets@gmail.com).
-
 ---

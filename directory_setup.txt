@@ -1,0 +1,58 @@
+- checkpoints: Contains trained weights.
+- dataloaders: 
+    - dataloaderClassification.py : Dataloader for classification task.
+    - dataloaderSentence.py : Dataloader for sentence task.
+- dataset`
+    - bertvocab:
+        - v2 : bert tokernizer
+    - Cholec80-VQA:
+        - Classification: 1-40 videos Classification Q&A pairs
+            - 1:
+            - .....
+            - 40:
+        - Sentence: 1-40 videos Sentence Q&A pairs
+            - 1:
+            - .....
+            - 40:
+        - cropped_images: contains 1-40 video folders.
+            - 1: contains image frames extracted from video.
+                - vqa:  Contains img_features extracted from each frame with different patch size.
+                    - img_features:
+                        - 1x1: img_features extracted with a patch size of 1x1
+                        - 2x2: img_features extracted with a patch size of 2x2
+                        - 3x3: img_features extracted with a patch size of 3x3
+                        - 4x4: img_features extracted with a patch size of 4x4
+                        - 5x5: img_features extracted with a patch size of 5x5
+                - 0.png
+                - 1.png
+                - .....
+            - .....
+            - 40:
+    - EndoVis-18-VQA: seq_{1-7,9-12,14-16}. Each sequence folder follows the following seq_1 folder structure. 
+        - seq_1: 
+            - left_frames: Image frames (left_frames) for each sequence can be downloaded from  EndoVIS18 challange.
+            - vqa
+                - Classification: Classification Q&A pairs.
+                - Sentence: Sentence Q&A pairs.
+                - img_features: Contains img_features extracted from each frame with different patch size.
+                    - 1x1: img_features extracted with a patch size of 1x1
+                    - 2x2: img_features extracted with a patch size of 2x2
+                    - 3x3: img_features extracted with a patch size of 3x3
+                    - 4x4: img_features extracted with a patch size of 4x4
+                    - 5x5: img_features extracted with a patch size of 5x5
+        - ....
+        - seq_16
+
+    - VQA-Med:
+    - feature_extraction_Cholec80-VQA.py: Used to extract features (based on patch size) for Cholec80-VQA images.
+
+- models: 
+    - VisualBertResMLP.py : Our proposed encoder.
+    - visualBertClassification.py : VisualBert encoder-based classification model.
+    - VisualBertResMLPClassification.py : VisualBert ResMLP encoder-based classification model.
+    - VisualBertSentence.py : VisualBert encoder + Transformer decoder sentence generation model.
+    - VisualBertResMLPSentence.py : VisualBert ResMLP encoder + Transformer decoder sentence generation model.
+- train_classification.py
+- test_sentence.py
+- eval_sentence.py
+- utils.py
